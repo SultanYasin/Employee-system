@@ -3,6 +3,8 @@ package com.example.demo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @SpringBootApplication
@@ -10,7 +12,32 @@ public class DemoApplication {
 
 	public static void main(String[] args)throws Exception { SpringApplication.run(DemoApplication.class, args);
 
+
+		String s = " Essa  AEsse  QEssy ";
+
+		// look after a specific pattern to change. * -> Matches any string that contains zero or more occurrences/ ? Matches any string that contains more occurrences
+		String check = "Ess.? ";
+
+		//Defines a pattern (to be used in a search) / the pattern is created using the Pattern.compile()
+		Pattern p = Pattern.compile(check);
+
+		/*Used to search for the pattern. The matcher() method is used to search for the pattern in a string. It returns a Matcher object which contains information about the search that was performed.*/
+		Matcher m = p.matcher(s);
+
+		System.out.println(s);
+
+		s = m.replaceAll("Essa ");
+
+		System.out.println(s);
+
+
+
+
 /*
+
+
+
+
 		UserInfo user = new UserInfo("Sultan" , 50);
 
 		System.out.println("\n" + user.getName());
@@ -47,6 +74,52 @@ public class DemoApplication {
 		 empId.put("Sulan" , 2);
 		 empId.put("Sul" , 3);
 		System.out.println(empId);
+
+
+
+
+		________________________________________________________________________________
+		this is how to make a space between words if there is an upperCase letter in a sentence
+
+import java.io.*;
+import java.util.*;
+class Solution {
+  public static String camelCase(String input) {
+
+
+    StringBuilder sb = new StringBuilder();
+
+    for(int i=0; i<input.length(); i++) {
+    char c = input.charAt(i);
+
+    if(Character.isUpperCase(c)) sb.append(' ');
+
+    sb.append(c);
+
+
+}
+ return sb.toString();
+
+
+  }
+}
+
+ OOOOOOOOORRRRRRRRRR
+ class Solution {
+  public static String camelCase(String input) {
+        return input.replaceAll("([A-Z])", " $1");
+  }
+}
+
+
+_________________________________________________________
+
+remove a specific char from a string using regex
+public class Troll {
+    public static String disemvowel(String Z) {
+        return Z.replaceAll("(?i)[aeiou]" , ""); (?i) -> CASE_INSENSITIVE , [xxx] letters that will be replaced
+    }
+}
 
 
 */

@@ -15,8 +15,47 @@ public class ControllerClass {
 
 public ControllerClass(){}
 
+    @RequestMapping("/hi")
+    public String sayHI(){return "hi - From - Controller";}
+
+
     @Autowired
     Emp_Info_Services emp_info_services;
+
+    @GetMapping("/all")
+    public List<EmployeeInformation> getAllEmpInfo(){
+        return emp_info_services.getAllInfo();
+    }
+
+    @GetMapping("/{id}")
+    public EmployeeInformation findById(@PathVariable("id") int id ){
+       return emp_info_services.findEmpById(id).orElseThrow();
+    }
+
+    @DeleteMapping("Delete/{id}")
+    public void deleteEmpById(@PathVariable int id){
+         emp_info_services.deleteById(id);
+    }
+
+    @PostMapping
+    public EmployeeInformation addNewEmp(@RequestBody EmployeeInformation employeeInformation){
+        return emp_info_services.save(employeeInformation);
+    }
+
+
+    @PutMapping("/{id}")
+    public EmployeeInformation updateAllEmpInfoById
+            (@RequestBody EmployeeInformation employeeInfo , @PathVariable("id") int id ){
+
+        return emp_info_services.updateById(id) ;
+    }
+
+
+
+
+
+
+    //________________________________LIST_______________________________
 
     List<EmployeeInformation> employeeInformationList = new ArrayList<>(List.of(
             new EmployeeInformation("Sultan" , "Yasin" , "IT-Java" , "Värnamo-SveaVägen37 33150"),
@@ -27,20 +66,14 @@ public ControllerClass(){}
     ));
 
 
-
-    @RequestMapping("/hi")
-    public String sayHI(){return "hi - From - Controller";}
-
-
-    @GetMapping("/all")
-    public List<EmployeeInformation> getAllEmpInfo(){
-        return emp_info_services.getAllInfo();
+    @GetMapping("/fromList")
+    public List<EmployeeInformation>  getAll(){
+        return employeeInformationList;
     }
 
-    @GetMapping("/{id}")
-    public EmployeeInformation findById(@PathVariable int id ){
-        for (EmployeeInformation z : employeeInformationList) if (z.getId() == id ) return z;
-        return  null ;
+    @PostMapping("/add")
+    public void addnew(@RequestBody EmployeeInformation employeeInformation){
+        employeeInformationList.add(employeeInformation);
     }
 
     @RequestMapping(path="FirstName/{firstName}")
@@ -49,47 +82,7 @@ public ControllerClass(){}
         return  null ;
     }
 
-    @DeleteMapping("Delete/{id}")
-    public void deleteEmpById(@PathVariable int id){
-         emp_info_services.deleteById(id);
-    }
 
 
-    @PostMapping("/add")
-    public void addnew(@RequestBody EmployeeInformation employeeInformation){
-         employeeInformationList.add(employeeInformation);
-    }
-
-    @PostMapping
-    public EmployeeInformation addNewEmp(@RequestBody EmployeeInformation employeeInformation){
-        return emp_info_services.save(employeeInformation);
-    }
-
-
-    @GetMapping("/fromList")
-    public List<EmployeeInformation>  getAll(){
-        return employeeInformationList;
-    }
-
-
-
-    @PutMapping("/{id}")
-    public EmployeeInformation updateAllEmpInfoById
-            (@RequestBody EmployeeInformation employeeInfo , @PathVariable("id") int id ){
-        EmployeeInformation existingInfo = employeeInformationList.stream().filter(x -> x.getId() == id).findFirst().orElseThrow();
-
-        existingInfo.setFirstName(employeeInfo.getFirstName());
-        existingInfo.setLastName(employeeInfo.getLastName());
-        existingInfo.setDepartment(employeeInfo.getDepartment());
-        existingInfo.setFullAddress(employeeInfo.getFullAddress());
-
-      //  BeanUtils.copyProperties(employeeInfo , existingInfo , "id"); // this class is used to copy all properties from x to z
-
-        return existingInfo;
-    }
-
-
-
-
-
+//  BeanUtils.copyProperties(employeeInfo , existingInfo , "id"); // this class is used to copy all properties from x to z
 }
